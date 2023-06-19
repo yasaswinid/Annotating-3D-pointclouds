@@ -1,1 +1,1 @@
-# Generating-part-annotations-for-3D-point-clouds
+# Annotating 3D point clouds
