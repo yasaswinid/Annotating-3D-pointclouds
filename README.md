@@ -1,5 +1,5 @@
 # Annotating 3D point clouds
-This is a project focusing on labelling different parts of a 3D point cloud. 
+This project aims to annotate different parts of a 3D point cloud by utilizing a 3D template matching method. The process becomes easier when multiple repetitions of a part can be annotated simultaneously. The project includes a user interface (UI) that allows users to load the source and template point clouds. They can provide additional information such as the part name and the desired color for labeling representation. Upon submission, the system labels the repetitions of the part in the source point cloud. The UI also provides an option to directly label without finding repetitions. Users can reload the labeled point cloud and select another part for annotation. By repeating this process, complete 3D point cloud can be annotated iteratively. 
 
 ## Setup
 :information_source: *Currently supports Python 3.9.5*
@@ -85,5 +85,38 @@ If a template is not already available, follow these steps to crop a template fr
 |                          Right Mouse Button                          | Rotates the camera                                   |
 |                             Mouse Wheel                              | Zooms in & out the Point Cloud                       |
 
+# Supported Label Format
+Its important to note that the label name that is entered in UI should be less than 15 letters. Because this code uses a plyfile library to modify the loaded source point cloud's .ply file to add an attribute called LABEL. This attribute stores the label information in the annotated point cloud with individual letters stored with their ASCII values.
+The code snippet for this can be seen in code_help.py. 
+```bash
+def write_ply_labels(self,labelledPcd,filename, final_label_lst, labels_dict):
+    """ Function to stored labelled point cloud
+    :Params 
+        - labelledPcd = 3D point cloud
+        - filename = String
+        - self = parent class
+    """
+    coordinates = np.asarray(labelledPcd.points)
+    colors_list = np.array([self.labels_dict[key] for key in self.labels_list])
+    colors = colors_list
+    normals = np.asarray(labelledPcd.normals)
+    alpha = [1.0]*len(coordinates)
+    final_label_lst = decode(self.labels_list)
+    prop = [('x', 'f4'), ('y', 'f4'), ('z', 'f4'), ('nx', 'f4'), ('ny', 'f4'), ('nz', 'f4'), ('red', 'f4'),
+            ('green', 'f4')
+        , ('blue', 'f4'), ('alpha', 'f4'), ('label', 'i4', (15,))]
+    vertex_all = np.empty(len(coordinates), dtype=prop)
+    for i_prop in range(0, 3):
+        vertex_all[prop[i_prop][0]] = coordinates[:, i_prop]
+    for i_prop in range(0, 3):
+        vertex_all[prop[i_prop+3][0]] = normals[:, i_prop]
+    for i_prop in range(0, 3):
+        vertex_all[prop[i_prop + 6][0]] = colors[:, i_prop]
+    vertex_all[prop[9][0]] = alpha
+    vertex_all[prop[10][0]] = final_label_lst
+
+    ply = PlyData([PlyElement.describe(vertex_all, 'vertex')], text=True)
+    ply.write(filename)
+```
 
   
