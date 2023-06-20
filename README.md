@@ -12,6 +12,20 @@ pip install -r Requirements.txt  # 2. Install requirements
 python3 UI.py  # 4. Start labelCloud
 ```
 
+## 3D Template Matching
+This project does template matching in 3 steps :
+### 1. Feature Descriptor Estimation:
+* After Data Pre-processing, calculate feature vectors for each point in the source and template point clouds by Fast Point Feature Histogram (FPFH) method
+### 2. Correspondence Estimation:
+* Perform the K-nearest neighbors (KNN) search in the feature space to find similar points between the source and template point clouds.
+* Apply DBSCAN clustering to segment the scene points into distinct clusters based on density.
+* Estimate correspondences between each cluster & template points
+### 3. Transformation Estimation:
+* Estimate the rigid transformation matrix based on the correspondences between clusters and template points.
+* Refine the transformation using the Iterative Closest Point (ICP) algorithm to minimize the distance between corresponding points.
+* Utilize Uniform Random Rotations (URR) to generate a set of seed transformations for ICP registration.
+* Use specific uniform rotations around the Y-axis as seed transformations for more efficient and accurate registration.
+
 ## Labelling Instructions & Steps
 For labelling the 3D point cloud, user needs  two 3D points clouds which are source and template point clouds.
 
