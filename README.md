@@ -9,7 +9,7 @@ This project aims to annotate different parts of a 3D point cloud by utilizing a
 git clone https://github.com/yasaswinid/Annotating-3D-pointclouds.git  # 1. Clone repository
 pip install -r Requirements.txt  # 2. Install requirements
 # 3. Copy point clouds into `pointclouds` folder.
-python3 UI.py  # 4. Start labelCloud
+python3 MTP_UI.py  # 4. Start labelCloud
 ```
 
 ## 3D Template Matching
