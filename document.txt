@@ -1,0 +1,211 @@
+Module MTP_UI
+=============
+
+Classes
+-------
+
+`MainWindow()`
+:   QWidget(parent: typing.Optional[QWidget] = None, flags: Union[Qt.WindowFlags, Qt.WindowType] = Qt.WindowFlags())
+
+    ### Ancestors (in MRO)
+
+    * PyQt5.QtWidgets.QWidget
+    * PyQt5.QtCore.QObject
+    * sip.wrapper
+    * PyQt5.QtGui.QPaintDevice
+    * sip.simplewrapper
+
+    ### Methods
+
+    `black_out(self)`
+    :   Functionality of a TOGGLE button in UI
+        which toggles between unlabelled points and labelled points of point cloud
+        which helps in cropping template
+
+    `crop_temp(self)`
+    :   Function to CROP the 3D points enclosed by bounding box
+
+    `initUI(self)`
+    :
+
+    `move_bbox(self, dir)`
+    :   Function takes a parameter
+        -dir = axis and direction for bounding box to move.
+        Function to move the bounding box
+
+    `on_combobox_changed(self, flg)`
+    :   Function which sets the Est. template repetitions
+
+    `openColorPicker(self)`
+    :   Function to assign label color to LOAD tab of template UI
+
+    `openColorPicker1(self)`
+    :   Function to assign label color to CROP tab of template UI
+
+    `open_file_src(self)`
+    :   Function helps to load source point cloud .ply file from the system
+
+    `open_file_tmp(self)`
+    :   Function to load the template point cloud
+
+    `reload_to_lbl(self)`
+    :   Function which enables relabeling of a labelled point cloud
+
+    `reset_bbox(self)`
+    :   Function to reset Bounding box dimensions
+
+    `save_labelled_pc(self)`
+    :   Function to save the finally labelled Point cloud
+
+    `save_temp(self)`
+    :   Function to save the cropped template
+
+    `show_bbox(self)`
+    :   Function to Initiate a Bounding Box for cropping
+
+    `span_bbox(self, var)`
+    :   Function to change Bounding box dimensions
+        Parameter :
+        -var : a variable indicating length/width/height along with inc or dec
+
+    `submit(self)`
+    :   Function which uses template and source 3D point cloud for template matching and labelling
+        where template if loaded from system
+
+    `temp_crop_submit(self)`
+    :   Function which uses template and source 3D point cloud for template matching and labelling
+        where template if cropped from source point cloud
+
+    `view_pc(self, flg)`
+    :   Function which enables to view the different stages of template matching
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+NAME
+    code - Python module which takes the source and template points clods and do the template matching
+=====================================================================================================
+
+
+FUNCTIONS
+    NormalizeData(data)
+        Function to normalise the points data of a point cloud
+        :params
+            -data : numpy array
+
+    draw_registration_result(source, target, transformation)
+        Function to visualise the performance of ICP registration.
+        After ICP registration, pass the final transformation to visualise the result
+         :params
+            - source : template point cloud
+            - target : source point cloud
+            - transformation : 4X4 rigid transformation matrix from ICP Registration.
+
+        This transformation is applied on template point cloud and visualised
+
+    extract_fpfh(pcd, pcr)
+        Function to calculate FPFH feature descriptors.
+        :params
+            - pcd : point cloud whose FPFH has to be determined
+
+    final_colured_pcd_vis(transformations, temp_pcd, pcd, label_colour, label_txt, label_lst)
+        Function which takes all the transformations for a template and uses the help of bounding box on transformed
+        template to get all the points of 3D template matching.
+        :params
+            - transformations : list of size c. Each element is a 4X4 rigid transformation matrix.
+                                c is the number of repetitions of the template estimated.
+            - temp_pcd : template point cloud
+            - pcd : source point cloud
+            - label_color : list of size 3 with RGB float values
+            - label_txt : str
+            - label_list : list of strings of size (N,) where N is numbers of points in pcd
+
+    fpfh_visualise(scene_feats, pcd)
+        Function to visualise the FPFH features
+        :params
+            -scene_feats : numpy array of dimension (N,33). FPFH features calculated are 33 length vector for each point
+            - pcd : point cloud whose FPFH are calculated.
+
+        This functions reduces 33 dimensions of FPFH to 3 dimension with Principal component reduction.
+        These values are passed a values of colors to pointclouds and visualised
+
+    icp_knn(temp, pcd, transformation)
+        Function to calculate how good the ICP Registration result is.
+        :params
+            - temp : template point cloud
+            - pcd : source point cloud
+            - transformation : 4X4 rigid transformation matrix from ICP Registration.
+
+            This functions calculates the average of nearest neighbour distances of the transformed template in the source point cloud.
+            If the vales are too high then it indicates bas ICP Registration. Too low values represent perfect Registration.
+
+    keypoint_features(kp, feats)
+        Calculate FPFH features of all keypoints
+        :params
+            kp: numpy array of size (N,3). N is number of keypoints
+            feats : numpy array of size (M,33). M is total number of points in source point cloud
+
+    knn(temp_feats, scene_feats, k)
+        Function to calculate K nearest neighbors for points of template in points of source point cloud in feature space (FPFH)
+        :params
+            - temp_feats : numpy array of dimension (M,33). FPFH feature descriptors of template point cloud
+            - scene_feats : numpy array of dimension (N,33). FPFH feature descriptors of scene point cloud
+            - K : int. Number of nearest neighbors per point of template.
+             M is the number of points in template point cloud
+             N is the number of points in source point cloud
+
+    pcr_caluclator(scene_coords)
+        Function to calculate average point cloud resolution (PCR)
+        :params
+            - scene_coords : numpy array of x,y,z coordinates of all points of pointcloud.
+                            Dimensions = (N,3) #N is number of points in pointcloud
+
+    template_matching_Coluring(temp_pcd, pcd, label_colour, label_txt, label_list)
+        Function to find 3D template matches in source point cloud
+        :params
+            - temp_pcd : template point cloud
+            - pcd : source point cloud
+            - label_color : list of size 3 with RGB float values
+            - label_txt : str
+            - label_list : list of strings of size (N,) where N is numbers of points in pcd
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Module code_help
+================
+Python module to read and write point clouds from and to .ply files respectively
+
+Functions
+---------
+
+
+`decode(labels_lst)`
+:   Function to convert a list of labels to a numpy array of ints
+    params:
+        -labels_lst : list of string of size N. N is number of points in source point cloud
+
+    :return - a 2D numpy array of size (N,15).
+
+    Each value of labels_lst is a string. This string is converted into a 1D array of size (1,15) by converting letters
+    to ASCII values
+
+
+`encode(labels_lst)`
+:   Function to convert a 2D array to a list of labels
+    :params
+        -labels_lst : 2D numpy array of size (N,15). N is number of points in source point cloud
+
+    :return - list of strings (labels)
+
+
+`reaaad_plydata(src_filepath)`
+:   Function to read a point cloud from .ply file path
+    :params
+        -src_filepath : str.
+
+
+`write_ply_labels(self, labelledPcd, filename, final_label_lst, labels_dict)`
+:   Function to stored labelled point cloud
+    :Params
+        - labelledPcd = 3D point cloud
+        - filename = String
+        - self = parent class
