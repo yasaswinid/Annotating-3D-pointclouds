@@ -11,7 +11,7 @@ cd Annotating-3D-pointclouds # Change the directory
 pip install -r Requirements.txt  # 2. Install requirements
 # 3. Copy point clouds into `pointclouds` folder.
 python3 MTP_UI.py  # 4. Start labelling
-PYOPENGL_PLATFORM=mesa python MTP_UI.py # 5. If running in WSO2 or Linux
+PYOPENGL_PLATFORM=mesa python MTP_UI.py # 4. If running in WSL
 ```
 
 ## 3D Template Matching
