@@ -7,6 +7,7 @@ This project aims to annotate different parts of a 3D point cloud by utilizing a
 ### via git (manually)
 ```bash
 git clone https://github.com/yasaswinid/Annotating-3D-pointclouds.git  # 1. Clone repository
+cd Annotating-3D-pointclouds # Change the directory
 pip install -r Requirements.txt  # 2. Install requirements
 # 3. Copy point clouds into `pointclouds` folder.
 python3 MTP_UI.py  # 4. Start labelling
