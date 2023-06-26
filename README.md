@@ -133,4 +133,7 @@ def write_ply_labels(self,labelledPcd,filename, final_label_lst, labels_dict):
     ply.write(filename)
 ```
 
+## Dataset
+We have used BuildingNet dataset which is available at : https://buildingnet.org/
+
   
