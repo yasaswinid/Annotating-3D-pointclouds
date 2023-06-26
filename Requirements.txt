@@ -9,3 +9,4 @@ sklearn==0.0
 matplotlib==3.5.3
 plyfile==0.9
 open3d==0.15.1
+PyOpenGL==3.1.6
