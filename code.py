@@ -245,7 +245,7 @@ def template_matching_Coluring(temp_pcd,pcd, label_colour,label_txt, label_list)
     knn_point_cloud = pcd.select_by_index(all_knn_indices)
     pcr_for_knn = pcr_caluclator(np.asarray(knn_point_cloud.points))
     print("pcr for knn = ",pcr_for_knn)
-    o3d.visualization.draw_geometries([knn_pointcloud])
+    #o3d.visualization.draw_geometries([knn_pointcloud])
 
     """DBSCAN"""
     db_clust_points = int(no_of_temp_pcd_points * 2 / 100)
@@ -261,7 +261,7 @@ def template_matching_Coluring(temp_pcd,pcd, label_colour,label_txt, label_list)
     with o3d.utility.VerbosityContextManager(
             o3d.utility.VerbosityLevel.Debug) as cm:
         labels = np.array(
-            knn_point_cloud.cluster_dbscan(eps=0.025, min_points=db_clust_points, print_progress=True))
+            knn_point_cloud.cluster_dbscan(eps=dbscan_est, min_points=db_clust_points, print_progress=True))
     #print(labels)
     max_label = labels.max()
     print(f"point cloud has {max_label + 1} clusters")
@@ -271,7 +271,7 @@ def template_matching_Coluring(temp_pcd,pcd, label_colour,label_txt, label_list)
     knn_point_cloud.colors = o3d.utility.Vector3dVector(colors[:, :3])
     #print(len(new_pcl.points))
     dbscan_pc = knn_point_cloud
-    o3d.visualization.draw_geometries([dbscan_pc])
+    #o3d.visualization.draw_geometries([dbscan_pc])
 
     #print(labels)
     dbscan_cluster_without_noise_indices = []
